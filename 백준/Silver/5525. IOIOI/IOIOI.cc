@@ -1,29 +1,22 @@
 #include <stdio.h>
+#include <algorithm>
 
 int n, m;
-char sta[10010];
-int l;
+char s[1000010];
 
 int main()
 {
 	int i, j;
-	scanf("%d", &n);
-	int cnt = 0;
-	sta[cnt++] = 'I', sta[cnt++] = 'O', sta[cnt++] = 'I';
-	for (i = 1; i < n; i++) {
-		sta[cnt++] = 'O';
-		sta[cnt++] = 'I';
-	}
-	scanf("%d", &l);
-	char s[10010];
-	int ans = 0;
+	scanf("%d %d", &n, &m);
 	scanf("%s", s);
-	for (j = 0; j < l - cnt + 1; j++) {
-		int src = 0, ch = 0;
-		for (int k = j; k < j + cnt; k++) {
-			if (sta[src++] != s[k]) ch = 1;
+	int cnt = 0, ans = 0;
+	for (i = 0; i < m;) {
+		if (s[i] == 'I' && s[i + 1] == 'O' && s[i + 2] == 'I') i += 2, cnt++;
+		else {
+			if ((cnt - n + 1) > 0) ans += (cnt - n + 1);
+			cnt = 0;
+			i++;
 		}
-		if (ch == 0) ans++;
 	}
 	printf("%d", ans);
 	return 0;

@@ -4,10 +4,9 @@
 
 using namespace std;
 
-int n;
+int n, p[100010];
 vector <pair<int, int>> vec;
-vector <int> lis, way;
-int p[1000010];
+vector <int> lis, ans;
 
 int main()
 {
@@ -22,28 +21,25 @@ int main()
 	lis.push_back(vec[0].second);
 	for (i = 1; i < n; i++) {
 		int l = lis.size();
-		if (lis.back() < vec[i].second) {
+		int lb = lower_bound(lis.begin(), lis.end(), vec[i].second) - lis.begin();
+		if (lb >= l) {
 			lis.push_back(vec[i].second);
-			p[i] = lis.size() - 1;
+			p[i] = l;
 		}
 		else {
-			auto lb = lower_bound(lis.begin(), lis.end(), vec[i].second);
-			*lb = vec[i].second;
-			p[i] = lb - lis.begin();
+			lis[lb] = vec[i].second;
+			p[i] = lb;
 		}
 	}
-	int cnt = lis.size();
-	cnt--;
-
-	for (int i = n - 1; i >= 0; i--) {
-		if (p[i] == cnt) {
-			cnt--;
+	int l = lis.size() - 1;
+	for (i = n - 1; i >= 0; i--) {
+		if (l == p[i]) {
+			l--;
 			continue;
 		}
-		way.push_back(vec[i].first);
+		ans.push_back(vec[i].first);
 	}
-
-	printf("%d\n", way.size());
-	for (i = way.size() - 1; i >= 0; i--) printf("%d\n", way[i]);
+	printf("%d\n", n - lis.size());
+	for (i = ans.size() - 1; i >= 0; i--) printf("%d\n", ans[i]);
 	return 0;
 }

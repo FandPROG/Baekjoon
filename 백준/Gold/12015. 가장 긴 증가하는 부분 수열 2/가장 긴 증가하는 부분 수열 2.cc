@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -15,12 +15,10 @@ int main()
 	for (i = 0; i < n; i++) scanf("%d", &arr[i]);
 	lis.push_back(arr[0]);
 	for (i = 1; i < n; i++) {
-		int l = lis.size();
 		int lb = lower_bound(lis.begin(), lis.end(), arr[i]) - lis.begin();
-		if (lb >= l) lis.push_back(arr[i]);
-		else {
-			lis[lb] = arr[i];
-		}
+		int sz = lis.size();
+		if (sz <= lb) lis.push_back(arr[i]);
+		else lis[lb] = arr[i];
 	}
 	printf("%d", lis.size());
 	return 0;

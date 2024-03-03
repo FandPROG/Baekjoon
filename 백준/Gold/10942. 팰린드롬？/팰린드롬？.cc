@@ -23,8 +23,7 @@ int main()
 	for (i = 0; i < m; i++) {
 		int x, y;
 		scanf("%d %d", &x, &y);
-		if (dp[x][y] > 0) printf("1\n");
-		else printf("0\n");
+		printf("%d\n", dp[x][y]);
 	}
 	return 0;
 }

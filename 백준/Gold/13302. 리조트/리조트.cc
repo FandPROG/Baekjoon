@@ -16,22 +16,24 @@ int main()
 		scanf("%d", &x);
 		ch[x] = 1;
 	}
+	if (n == m) {
+		printf("0");
+		return 0;
+	}
 	for (i = 0; i <= n + 5; i++) {
 		for (j = 0; j <= n + 5; j++) {
 			dp[i][j] = 2e9;
 		}
 	}
 	dp[0][0] = 0;
-	for (i = 1; i <= n; i++) {
+	for (i = 0; i <= n; i++) {
 		for (j = 0; j <= n; j++) {
-			if (ch[i] == 1) {
-				dp[i][j] = dp[i - 1][j];
-				continue;
-			}
-			dp[i][j] = min(dp[i][j], dp[i - 1][j] + 10);
-			dp[i][j] = min(dp[i][j], dp[i - 1][j + 3]);
-			if (i >= 3 && j >= 1) dp[i][j] = min(dp[i][j], dp[i - 3][j - 1] + 25);
-			if (i >= 5 && j >= 2) dp[i][j] = min(dp[i][j], dp[i - 5][j - 2] + 37);
+			if (dp[i][j] == 2e9) continue;
+			if (ch[i + 1] == 1) dp[i + 1][j] = min(dp[i][j], dp[i + 1][j]);
+			dp[i + 1][j] = min(dp[i][j] + 10, dp[i + 1][j]);
+			if (j >= 3) dp[i + 1][j - 3] = min(dp[i + 1][j - 3], dp[i][j]);
+			for (int l = 1; l <= 3; l++) dp[i + l][j + 1] = min(dp[i][j] + 25, dp[i + l][j + 1]);
+			for (int l = 1; l <= 5; l++) dp[i + l][j + 2] = min(dp[i][j] + 37, dp[i + l][j + 2]);
 		}
 	}
 	int ans = 2e9;

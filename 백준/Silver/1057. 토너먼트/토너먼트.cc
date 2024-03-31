@@ -1,20 +1,19 @@
 #include <stdio.h>
 
+int n;
+
 int main()
 {
-	int i, n, a, b;
-	scanf("%d %d %d", &n, &a, &b);
-	for (i = 1;; i++) {
-		if (i > n) {
-			printf("-1");
-			return 0;
-		}
-		if (a % 2) a++;
-		if (b % 2) b++;
-		a /= 2;
-		b /= 2;
-		if (a == b) break;
+	int x, y;
+	scanf("%d %d %d", &n, &x, &y);
+	int cnt = 1;
+	while (1) {
+		if (x % 2) x++;
+		if (y % 2) y++;
+		x /= 2, y /= 2;
+		if (x == y) break;
+		cnt++;
 	}
-	printf("%d", i);
+	printf("%d", cnt);
 	return 0;
 }

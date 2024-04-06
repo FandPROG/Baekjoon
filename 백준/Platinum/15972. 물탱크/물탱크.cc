@@ -86,7 +86,7 @@ int main()
 			if (arr[n_x][n_y][i] == -1) continue;
 			int nx = n_x + dx[i], ny = n_y + dy[i];
 			if (n_h >= map[nx][ny]) continue;
-			if (n_h > arr[n_x][n_y][i] && arr[n_x][n_y][i] >= map[nx][ny]) continue;
+			if (n_h < arr[n_x][n_y][i] && arr[n_x][n_y][i] >= map[nx][ny]) continue;
 			int nh;
 			if (n_h < arr[n_x][n_y][i]) nh = arr[n_x][n_y][i];
 			else nh = n_h;

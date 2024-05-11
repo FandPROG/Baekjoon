@@ -3,19 +3,19 @@
 
 using namespace std;
 
-int n;
-int arr[500010];
-int ans;
+long long n;
+long long arr[500010];
+long long ans;
 
 int main()
 {
-	int i, j;
-	scanf("%d", &n);
-	for (i = 0; i < n; i++) scanf("%d", &arr[i]);
-	int nw = 0;
+	long long i, j;
+	scanf("%lld", &n);
+	for (i = 0; i < n; i++) scanf("%lld", &arr[i]);
+	long long nw = 0;
 	for (i = n - 1; i >= 0; i--) {
 		nw = min(nw + 1, arr[i]);
 		ans += nw;
 	}
-	printf("%d", ans);
+	printf("%lld", ans);
 }

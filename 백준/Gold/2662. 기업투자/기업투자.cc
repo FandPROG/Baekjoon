@@ -5,10 +5,8 @@
 using namespace std;
 
 int n, m;
-int dp[310][30];
-int arr[310][30];
-int way[310][30];
-int ans[30];
+int dp[310][30], arr[310][30];
+int way[310][30], ans[30];
 
 void dfs(int x, int y)
 {

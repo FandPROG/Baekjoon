@@ -1,51 +1,58 @@
 #include <stdio.h>
-#include <algorithm> 
 #include <queue>
 #include <vector>
+#include <algorithm>
+#define _CRT_SECURE_NO_WARNINGS
 
 using namespace std;
 
-vector <pair<int, int>> vec[20010];
-int dis[20010];
-int n, m;
+#define max_n 20001
+int n, m, k, mni[max_n];
 
-void Dijkstra(int s)
+vector< pair<int, int> > adj[max_n];
+priority_queue <pair<int, int>> q;
+
+void dijk()
 {
-	int i, j;
-	priority_queue<pair<int, int>> pq;
-	for (i = 0; i <= n; i++) dis[i] = 2e9;
-	pq.push({ 0, s });
-	dis[s] = 0;
-	while (!pq.empty()) {
-		int ds = -pq.top().first;
-		int pt = pq.top().second;
-		pq.pop();
-		if (dis[pt] < ds) continue;
-		for (i = 0; i < vec[pt].size(); i++) {
-			int n_ds = ds + vec[pt][i].second;
-			int n_pt = vec[pt][i].first;
-			if (dis[n_pt] > n_ds) {
-				dis[n_pt] = n_ds;
-				pq.push({ -n_ds, n_pt });
+	for(int i = 1;i <= n;i++) {
+		mni[i] = 987654321;
+	}
+	mni[k] = 0;
+	q.push({ 0,k });
+
+	while(!q.empty()) {
+		int u = q.top().second;
+		int value = -q.top().first;
+		q.pop();
+		if(value > mni[u]) continue;
+		for(auto i : adj[u]) {
+			int v = i.first;
+			int d = i.second;
+			if (value + d < mni[v]) {
+				mni[v] = value + d;
+				q.push({ -mni[v],v });
 			}
 		}
 	}
 }
-
 int main()
 {
 	int i, j;
-	int s;
-	scanf("%d %d %d", &n, &m, &s);
-	for (i = 0; i < m; i++) {
-		int x, y, z;
-		scanf("%d %d %d", &x, &y, &z);
-		vec[x].push_back({ y, z });
+	scanf("%d %d", &n, &m);
+	scanf("%d", &k);
+	for(i=1;i<=m;i++) {
+		int a, b, p;
+		scanf("%d %d %d", &a, &b, &p);
+		adj[a].push_back({ b,p });
 	}
-	Dijkstra(s);
-	for (i = 1; i <= n; i++) {
-		if (dis[i] == 2e9) printf("INF\n");
-		else printf("%d\n", dis[i]);
+	dijk();
+	for(i=1;i<=n;i++) {
+		if(mni[i] == 987654321) {
+			printf("INF\n");
+		}
+		else {
+			printf("%d\n", mni[i]);
+		}
 	}
 	return 0;
 }

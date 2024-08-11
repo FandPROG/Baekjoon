@@ -1,22 +1,33 @@
 #include <stdio.h>
+#include <algorithm>
+#include <vector>
 
-int dp[510][510], a[2][510], min = 99999999;
+using namespace std;
+
+int n;
+int r[510], c[510];
+int dp[510][510];
 
 int main()
 {
-	int i, j, k, b, c;
-	scanf("%d", &b);
-	for(i=0;i<b;i++) scanf("%d %d", &a[0][i], &a[1][i]);
-	for(k=1;k<b;k++) {
-		for(i=0;i+k<b;i++) {
-			for(j=i;j<i+k;j++) {
-				c = dp[i][j] + dp[j+1][k+i] + a[0][i]*a[1][j]*a[1][k+i];
-				if(c < min) min = c;
-			}
-			dp[i][i+k] = min;
-			min = 999999999;
+	int i, j;
+	scanf("%d", &n);
+	for (i = 0; i <= n; i++) {
+		for (j = 0; j <= n; j++) {
+			dp[i][j] = 2e9;
 		}
 	}
-	printf("%d", dp[0][b-1]);
+	for (i = 0; i <= n; i++) dp[i][i] = 0;
+	for (i = 1; i <= n; i++) scanf("%d %d", &r[i], &c[i]);
+	for (i = 1; i < n; i++) {
+		for (j = 1; j + i <= n; j++) {
+			int s = j;
+			int e = i + j;
+			for (int k = s; k < e; k++) {
+				dp[s][e] = min(dp[s][e], dp[s][k] + dp[k + 1][e] + (r[s] * c[k] * c[e]));
+			}
+		}
+	}
+	printf("%d", dp[1][n]);
 	return 0;
-} 
+}

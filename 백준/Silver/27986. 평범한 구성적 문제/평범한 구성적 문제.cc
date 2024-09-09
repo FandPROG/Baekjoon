@@ -1,21 +1,7 @@
 #include <stdio.h>
 #include <algorithm>
-#include <vector>
-#include <queue>
-
-using namespace std;
-
-struct dat {
-	int x, y, val;
-};
-
-bool comp(dat a, dat b)
-{
-	return a.val < b.val;
-}
 
 int n, m, k = 2e9;
-vector <dat> vec;
 
 int main()
 {

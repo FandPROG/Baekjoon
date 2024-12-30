@@ -2,53 +2,66 @@
 #include <algorithm>
 #include <vector>
 
+using ll = long long;
 using namespace std;
 
-long long arr[1000010];
-long long segtree[4000010];
-long long n, m, k;
+int n, m, k;
+ll arr[1000010];
+ll tree[4000010];
 
-long long init(long long s, long long e, long long node) {
-	if (s == e) return segtree[node] = arr[s];
-	long long mid = (s + e) / 2;
-	return segtree[node] = init(s, mid, node * 2) + init(mid + 1, e, node * 2 + 1);
-}
-
-long long sum(long long s, long long e, long long low, long long high, long long node) {
-	if (low > e || high < s) return 0;
-	if (low <= s && high >= e) return segtree[node];
-	long long mid = (s + e) / 2;
-	return sum(s, mid, low, high, node * 2) + sum(mid + 1, e, low, high, node * 2 + 1);
-}
-
-void update(long long s, long long e, long long node, long long idx, long long dis)
+void init(int s, int e, int nd)
 {
-	if (idx < s || idx > e) return;
-	segtree[node] += dis;
-	if (s != e) {
-		long long mid = (s + e) / 2;
-		update(s, mid, node * 2, idx, dis);
-		update(mid + 1, e, node * 2 + 1, idx, dis);
-	}
+    if(s == e) {
+        tree[nd] = arr[s];
+        return;
+    }
+    int mid = (s + e) / 2;
+    init(s, mid, nd * 2);
+    init(mid + 1, e, nd * 2 + 1);
+    tree[nd] = tree[nd * 2] + tree[nd * 2 + 1];
+}
+
+ll getSum(int s, int e, int l, int r, int nd)
+{
+    if(l > e || s > r) return 0;
+    if(l <= s && e <= r) return tree[nd];
+    int mid = (s + e) / 2;
+    return getSum(s, mid, l, r, nd * 2) + getSum(mid + 1, e, l, r, nd * 2 + 1);
+}
+
+void UpdateTree(int s, int e, int nd, int idx, ll val)
+{
+    if(e < idx || s > idx) return;
+    if(s == e) {
+        tree[nd] = val;
+        return;
+    }
+    int mid = (s + e) / 2;
+    UpdateTree(s, mid, nd * 2, idx, val);
+    UpdateTree(mid + 1, e, nd * 2 + 1, idx, val);
+    tree[nd] = tree[nd * 2] + tree[nd * 2 + 1];
 }
 
 int main()
 {
-	long long i, j;
-	scanf("%lld %lld %lld", &n, &m, &k);
-	for (i = 1; i <= n; i++) scanf("%lld", &arr[i]);
-	init(1, n, 1);
-	for (i = 0; i < m + k; i++) {
-		long long x, y, z;
-		scanf("%lld %lld %lld", &x, &y, &z);
-		if (x == 1) {
-			long long dis = z - arr[y];
-			arr[y] = z;
-			update(1, n, 1, y, dis);
-		}
-		else if (x == 2) {
-			printf("%lld\n", sum(1, n, y, z, 1));
-		}
-	}
-	return 0;
+    int i, j;
+    scanf("%d %d %d", &n, &m, &k);
+    for(i=1;i<=n;i++) scanf("%lld", &arr[i]);
+    init(1, n, 1);
+    for(i=0;i<m + k;i++) {
+        int x;
+        scanf("%d", &x);
+        if(x == 1) {
+            int idx;
+            ll val;
+            scanf("%d %lld", &idx, &val);
+            UpdateTree(1, n, 1, idx, val);
+        }
+        else {
+            int l, r;
+            scanf("%d %d", &l, &r);
+            printf("%lld\n", getSum(1, n, l, r, 1));
+        }
+    }
+    return 0;
 }

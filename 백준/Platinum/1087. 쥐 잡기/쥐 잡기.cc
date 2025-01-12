@@ -38,7 +38,7 @@ int main()
         vec.push_back({x, y, vx, vy});
     }
     d low = 0, high = 2000;
-    while(1e-12 < high - low) {
+    while(high - low > 1e-12) {
         d p = (low * 2.0 + high) / 3.0, q = (low + high * 2.0) / 3.0;
         if(func(p) < func(q)) high = q;
         else low = p;

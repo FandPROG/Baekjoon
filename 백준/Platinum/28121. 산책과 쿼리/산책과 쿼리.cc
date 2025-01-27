@@ -5,25 +5,32 @@ using ll = long long;
 using lD = long double;
 using D = double;
 
-struct bipartite_union_find {
-    int n, sum; vector<int> p, s;
-    bipartite_union_find(int n) : n(n), sum(0), p(n+n), s(n+n) {
-        iota(p.begin(), p.end(), 0);
-        fill(s.begin(), s.begin()+n, 1);
+struct DSU{
+    int n, sum;
+    vector <int> par, s;
+    DSU(int n) : n(n), sum(0), par(n<<1), s(n<<1) {
+        iota(par.begin(), par.end(), 0);
+        fill(s.begin(), s.end(), 1);
     }
-    int neg(int v){ return v < n ? v + n : v - n; }
-    int find(int v){ return v == p[v] ? v : p[v] = find(p[v]); }
-    void merge(int u, int v){
-        u = find(u); v = find(v);
+    int rev(int v) {
+        return v < n ? v + n : v - n;
+    }
+    int ffind(int x) {
+        if(par[x] == x) return x;
+        else return par[x] = ffind(par[x]);
+    }
+    void funion(int v, int u) {
+        u = ffind(u), v = ffind(v);
         if(u == v) return;
-        if(find(neg(u)) == u) sum -= s[u];
-        if(find(neg(v)) == v) sum -= s[v];
-        p[u] = v; s[v] += s[u];
-        if(find(neg(v)) == v) sum += s[v];
+        if(ffind(rev(u)) == u) sum -= s[u];
+        if(ffind(rev(v)) == v) sum -= s[v];
+        par[u] = v;
+        s[v] += s[u];
+        if(ffind(rev(v)) == v) sum += s[v];
     }
-    void add_edge(int u, int v){
-        merge(u, neg(v));
-        merge(v, neg(u));
+    void merge(int x, int y) {
+        funion(x, rev(y));
+        funion(rev(x), y);
     }
 };
 
@@ -31,15 +38,16 @@ int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
+
     int i, j;
-    int n, Q;
-    cin >> n >> Q;
-    bipartite_union_find dsu(n);
-    while(Q--) {
+    int n, q;
+    cin >> n >> q;
+    DSU dsu(n + 1);
+    while(q--) {
         int x, y;
         cin >> x >> y;
-        dsu.add_edge(x, y);
-        cout << dsu.sum << "\n";
+        dsu.merge(x, y);
+        cout << dsu.sum / 2 << "\n";
     }
     return 0;
 }

@@ -1,7 +1,11 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <deque>
+
 using namespace std;
 
-static const int INF = 0x3f3f3f3f;
+static const int INF = 2e9;
 
 int n, m;  
 int board[110][110];   

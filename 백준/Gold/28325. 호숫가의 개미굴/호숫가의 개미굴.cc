@@ -32,8 +32,12 @@ int main() {
         zeroGroup[0] += zeroGroup.back();
         zeroGroup.pop_back();
     }
-    for(i=0;i<zeroGroup.size();i++) {
-        ans += (zeroGroup[i] + 1) / 2;
+    if(ans == 0)
+        ans = zeroGroup.back() / 2;
+    else {
+        for(i=0;i<zeroGroup.size();i++) {
+            ans += (zeroGroup[i] + 1) / 2;
+        }
     }
     cout << ans;
     return 0;
